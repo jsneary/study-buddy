@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@sendgrid/mail": "^8.1.0",
-    "bcrypt": "^5.1.1",
-    "validator": "^13.11.0"
-  }
-}
