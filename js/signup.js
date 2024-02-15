@@ -4,7 +4,7 @@ let createUser = async function() {
     const url = "https://studybuddy-api.azurewebsites.net/user"
 
     const user = {
-        "email": "jsneary6@eagles.bridgewater.edu",
+        "email": "jsneary7@eagles.bridgewater.edu",
         "username": "justus123",
         "school": "Bridgewater",
         "majors": [],
