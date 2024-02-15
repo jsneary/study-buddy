@@ -22,8 +22,6 @@ let createUser = async function() {
     if (response.status == 200) {
 
         console.log("User created")
-
-        
     }
     else {
 
