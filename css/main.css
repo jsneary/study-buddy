@@ -1,0 +1,13 @@
+body {
+    background-color: #DDDDDD;
+}
+h1 {
+    margin: 5% auto 5% auto;
+    font-size: 50px;
+    text-align: center;
+}
+input {
+    margin-top: -150px;
+    float: right;
+    position: relative;
+}
