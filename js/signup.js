@@ -31,7 +31,7 @@ let createUser = async function() {
         console.log("User created")
 
         setTimeout(() => {
-            location.href = "login.html"
+            location.href = "pleaseVerify.html"
         }, 2000)
     }
     else {
