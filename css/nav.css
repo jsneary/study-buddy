@@ -10,3 +10,6 @@
     font-size: 15px;
     text-decoration: none;
 }
+.navlink:hover {
+    background-color: #888;
+}
