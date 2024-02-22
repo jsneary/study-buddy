@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+    <meta charset="utf-8">
+    <title>Studdy Buddy</title>
+    <link rel="stylesheet" href="css/createStudyGroup.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <style>
+        
+        
+    </style>
+</head>
+<body>
+
+    <div id="nav">
+        <a class="navlink" href="index.html" onclick="logoutUser()">Logout</a>
+        <a class="navlink" href="profile.html">Profile</a>
+        <a class="navlink" href="createStudyGroup.html">Create a Study Group</a>
+        <a class="navlink" href="main.html">Home</a>
+    </div>
+
+    <h1>Create a Study Group</h1>
+    <form>
+        <label for="name">Study Group Name</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        
+
+        <label for="maxParticipants">Max Participants</label><br>
+        <input type="text" id="maxParticipants" name="maxParticipants"><br>
+
+        <label for="startDate">Start Date</label><br>
+        <input type="text" id="startDate" name="startDate"><br>
+
+        <label for="endDate">End Date</label><br>
+        <input type="text" id="endDate" name="endDate"><br>
+
+        <input type="button" value="Meeting Times" id='modalButton' onclick="display()">
+
+        <div id="modal" class="modal">
+            <div class="modalContent">
+                <input type="button" value="X" id='exit' onclick="exit2()">
+                <p>Choose your meeting times</p>
+
+                <ul>        
+                    <li>
+                        <input type="checkbox" class="FL" id="monday">
+                        <label for="monday" class="FL">Monday</label><br> 
+                        <label for="timeM" class="FL">Time: </label> 
+                        <input type="text" id="timeM" name="time" class="FL"><br>
+                        <label for="locationM" class="FL">Location: </label> 
+                        <input type="text" id="locationM" name="location" class="FL"><br><br>
+
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="tuesday">
+                        <label for="tuesday" class="FL">Tuesday</label><br> 
+                        <label for="timeTU" class="FL">Time: </label> 
+                        <input type="text" id="timeTU" name="time" class="FL"><br>
+                        <label for="locationTU" class="FL">Location: </label> 
+                        <input type="text" id="locationTU" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="wednesday">
+                        <label for="wednesday" class="FL">Wednesday</label><br> 
+                        <label for="timeW" class="FL">Time: </label> 
+                        <input type="text" id="timeW" name="time" class="FL"><br>
+                        <label for="locationW" class="FL">Location: </label> 
+                        <input type="text" id="locationW" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="thursday">
+                        <label for="tuesday" class="FL">Thursday</label><br> 
+                        <label for="timeTH" class="FL">Time: </label> 
+                        <input type="text" id="timeTH" name="time" class="FL"><br>
+                        <label for="locationTH" class="FL">Location: </label> 
+                        <input type="text" id="locationTH" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="friday">
+                        <label for="friday" class="FL">Friday</label><br> 
+                        <label for="timeF" class="FL">Time: </label> 
+                        <input type="text" id="timeF" name="time" class="FL"><br>
+                        <label for="locationF" class="FL">Location: </label> 
+                        <input type="text" id="locationF" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="saturday">
+                        <label for="saturday" class="FL">Saturday</label><br> 
+                        <label for="timeSA" class="FL">Time: </label> 
+                        <input type="text" id="timeSA" name="time" class="FL"><br>
+                        <label for="locationSA" class="FL">Location: </label> 
+                        <input type="text" id="locationSA" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="sunday">
+                        <label for="sunday" class="FL">Sunday</label><br> 
+                        <label for="timeSU" class="FL">Time: </label> 
+                        <input type="text" id="timeSU" name="time" class="FL"><br>
+                        <label for="locationSU" class="FL">Location: </label> 
+                        <input type="text" id="locationSU" name="location" class="FL"><br><br>
+                    </li>
+                </ul>
+
+
+
+            </div>
+        </div>
+        <label for="public"></label>Public</label>
+        <input type="checkbox" id="public" name="public"><br>
+        <script>
+            let modal = document.getElementById('modal');
+            let button = document.getElementById('modalButton');
+            
+            button.onClick = function() {
+                //modal.style.display = "block";
+                console.log("button works")
+            }
+            let display = function() {
+                console.log(modal)
+                modal.style.display = "block";
+                console.log("button works")
+            }
+            let exit2 = function() {
+                console.log(modal)
+                modal.style.display = "none";
+                console.log("button2 works")
+            }
+            /*let close = function() {
+                console.log("close button works")
+                modal.style.display = "none";
+                
+            }*/
+        </script>
+        <!--<label for="meeting_times">Meeting Times</label><br>
+        <input type="checkbox" id="meeting_times" name="meeting_times"><br>-->
+
+        
+
+        <input type="button" value="Submit" id='submit' onclick="createStudyGroup()">
+
+    </form>
+
+    <script src="js/createStudyGroup.js"> </script>
+    <script src="js/logout.js"></script>
+</body>
+</html>

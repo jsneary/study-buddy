@@ -1,0 +1,12 @@
+#nav {
+    overflow: hidden;
+    background-color: #444;
+}
+#nav .navlink {
+    float: right;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 15px 15px;
+    font-size: 15px;
+    text-decoration: none;
+}
