@@ -6,6 +6,9 @@ let createStudyGroup = async function() {
     let maxParticipants = document.getElementById('maxParticipants').value
     let startDate = document.getElementById('startDate').value
     let endDate = document.getElementById('endDate').value
+    let description = document.getElementById('description').value
+    let school = document.getElementById('school').value
+    let courseCode = document.getElementById('courseCode').value
     let public = document.getElementById('public').checked
     console.log(public)
     let meeting_times = []
@@ -67,6 +70,8 @@ let createStudyGroup = async function() {
         "max_participants": maxParticipants,
         "start_date": startDate,
         "end_date": endDate,
+        "description": description,
+        "course_number": courseCode,
         "meeting_times": meeting_times
     }
     /*const studygroup = {
