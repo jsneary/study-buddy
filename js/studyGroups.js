@@ -191,4 +191,5 @@ let save = async function() {
         console.log("request error")
         console.log(response.status)
     }
+    modalContainer.style.display = "none";
 }
