@@ -33,7 +33,7 @@ let loginUser = async function() {
         const token = res.token
         console.log(token);
         localStorage.setItem("token", token);
-
+        localStorage.setItem("id", res.user._id)
 
         setTimeout(() => {
             location.href = "main.html"

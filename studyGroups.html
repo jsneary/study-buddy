@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+    <meta charset="utf-8">
+    <title>Studdy Buddy</title>
+    <link rel="stylesheet" href="css/studyGroups.css">
+    <link rel="stylesheet" href="css/nav.css">
+    
+</head>
+<body>
+
+    <div id="nav">
+        <a class="navlink" href="index.html" onclick="logoutUser()">Logout</a>
+        <a class="navlink" href="profile.html">Profile</a>
+        <a class="navlink" href="createStudyGroup.html">Create a Study Group</a>
+        <a class="navlink" href="main.html">Home</a>
+    </div>
+
+    <h1>Study Groups</h1>
+    <div id="inputs">
+        <label for="search">Search</label>
+        <input type="text" id="search" name="search" class="mainInput searchInput">
+
+        <label for="sortBy">Sort by</label>
+        <select name="sortBy" id="sortBy" class="searchInput">
+            <option value="name">Name</option>
+            <option value="school">School</option>
+            <option value="start_date">Start Date</option>
+            <option value="end_date">End Date</option>
+        </select>
+
+        <label for="desc"></label>Descending order</label>
+        <input type="checkbox" id="desc" name="desc" class="searchInput">
+
+        <label for="onGoing"></label>Active</label>
+        <input type="checkbox" id="onGoing" name="onGoing" class="searchInput">
+
+        <label for="skip"></label>Skip</label>
+        <input type="number" id="skip" name="skip" class="searchInput">
+
+        <label for="limit"></label>Limit</label>
+        <input type="number" id="limit" name="limit" value="5" class="searchInput">
+
+        
+
+        <input type="button" value="Search" id='submit' onclick="studyGroups()">
+    </div>
+
+    <table id="table">
+        <div><tr class="header">
+            <th id="tableName">Name</th>
+            <th id="tableSchool">School</th>
+            <th id="tableCourse">Course</th>
+            <th id="tableDescription">Description</th>
+            <th id="tableStartDate">Start Date</th>
+            <th id="tableEndDate">End Date</th>
+        </tr>
+    </table>
+
+    <div id="modalContainer">
+        <div id="modalContent">
+            <form id="modalForm">
+                <label for="name">Study Group Name</label><br>
+                <input type="text" id="name" name="name" class="mainInput"><br>
+        
+                <label for="maxParticipants">Max Participants</label><br>
+                <input type="text" id="maxParticipants" name="maxParticipants" class="mainInput"><br>
+        
+                <label for="startDate">Start Date</label><br>
+                <input type="text" id="startDate" name="startDate" class="mainInput"><br>
+        
+                <label for="endDate">End Date</label><br>
+                <input type="text" id="endDate" name="endDate" class="mainInput"><br>
+        
+                <label for="description">Description</label><br>
+                <input type="text" id="description" name="description" class="mainInput"><br>
+        
+                <label for="school">School</label><br>
+                <input type="text" id="school" name="school" class="mainInput"><br>
+        
+                <label for="courseCode">Course Code</label><br>
+                <input type="text" id="courseCode" name="courseCode" class="mainInput"><br>
+
+                <input type="button" value="Save" id='saveButton' onclick="save()">
+            </form>
+        </div>
+    </div>
+
+
+
+    <script src="js/logout.js"></script>
+    <script src="js/studyGroups.js"></script>
+</body>
+</html>

@@ -66,6 +66,7 @@ let createStudyGroup = async function() {
 
     const studygroup = {
         "name": name,
+        "school": school,
         "is_public": public,
         "max_participants": maxParticipants,
         "start_date": startDate,
@@ -110,7 +111,7 @@ let createStudyGroup = async function() {
 
 
         setTimeout(() => {
-            location.href = "main.html"
+            location.href = "studyGroups.html"
         }, 2000)
     }
     else {

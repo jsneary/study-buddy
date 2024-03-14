@@ -36,7 +36,7 @@ let createUser = async function() {
     }
     else {
 
-        console.log("request error")
+        console.log("signup request error")
         console.log(response.status)
     }
 }
