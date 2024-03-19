@@ -1,41 +1,49 @@
-let studyGroups = async function() {
-
+let studyGroups = async function(URL) {
+    
     let url = "https://studybuddy-api.azurewebsites.net/studygroups"
 
+    if (URL == 'none') {
+        let search = document.getElementById('search').value
+        let sortBy = document.getElementById('sortBy').value
+        let desc = document.getElementById('desc').checked
+        let onGoing = document.getElementById('onGoing').checked
+        let mine = document.getElementById('mine').checked
+        let skip = document.getElementById('skip').value
+        let limit = document.getElementById('limit').value
+        console.log(skip)
 
-    let search = document.getElementById('search').value
-    let sortBy = document.getElementById('sortBy').value
-    let desc = document.getElementById('desc').checked
-    let onGoing = document.getElementById('onGoing').checked
-    let skip = document.getElementById('skip').value
-    let limit = document.getElementById('limit').value
-    console.log(skip)
-
-    
-    if (search.length > 0) {
-        url = url + "?search=" + search + "&"
-    }
+        
+        if (search.length > 0) {
+            url = url + "?search=" + search + "&"
+        }
+        else {
+            url = url + "?"
+        }
+        if (desc) {
+            url = url + "sortBy=" + sortBy + ":desc&"
+        }
+        else {
+            url = url + "sortBy=" + sortBy + ":asc&"
+        }
+        if (onGoing) {
+            url = url + "ongoing=true&"
+        }
+        if (mine) {
+            url = url + "mine=true&"
+        }
+        if (skip > 0) {
+            url = url + "skip=" + skip + "&"
+        }
+        if (limit > 0) {
+            url = url + "limit=" + limit + "&"
+        }
+        
+        localStorage.setItem('url', url)
+        console.log(url)
+    }   
     else {
-        url = url + "?"
+        url = URL;
     }
-    if (desc) {
-        url = url + "sortBy=" + sortBy + ":desc&"
-    }
-    else {
-        url = url + "sortBy=" + sortBy + ":asc&"
-    }
-    if (onGoing) {
-        url = url + "ongoing=true&"
-    }
-    if (skip > 0) {
-        url = url + "skip=" + skip + "&"
-    }
-    if (limit > 0) {
-        url = url + "limit=" + limit + "&"
-    }
-    
-    console.log(url)
-
     const token = localStorage.getItem("token")
     //console.log(token);
     const options = {
@@ -75,14 +83,13 @@ let studyGroups = async function() {
                 console.log("ids match")
                 //editButton.style.margin = "0 auto 0 auto"
                 editButton.id = "editButton"
-                //editButton.onClick = "editModal()"
-                //editButton.setAttribute("onclick", "editModal(" + res[i]._id + ")")
-                //let id = "editModal(" + res[i]._id + ")"
-                //editButton.setAttribute("onclick", id)
-                console.log("ID: " + res[i]._id)
+                
+                /*console.log("ID: " + res[i]._id)
                 let resID = res[i]._id
-                editButton.addEventListener('click', function(){editModal(resID)}, false)
+                editButton.addEventListener('click', function(){editModal(resID)}, false)*/
+                let curRes = res[i]
                 editButton.setAttribute("class", res[i]._id)
+                editButton.addEventListener('click', function(){editModal(curRes)}, false)
                 nextCol.appendChild(editButton)
                 
             }
@@ -134,8 +141,60 @@ let studyGroups = async function() {
     }
 }
 
-let editModal = function(id) {
-    localStorage.setItem('openModal', id)
+let editModal = function(res) {
+    console.log(res)
+    localStorage.setItem('openModal', res._id)
+    
+    document.getElementById('name').value = res.name
+    document.getElementById('maxParticipants').value = res.max_participants
+    document.getElementById('startDate').value = res.start_date.split('T')[0]
+    document.getElementById('endDate').value = res.end_date.split('T')[0]
+    document.getElementById('description').value = res.description
+    document.getElementById('school').value = res.school
+    document.getElementById('courseCode').value = res.course_number
+    
+
+    for (i = 0; i < res.meeting_times.length; i++){
+        let curMeeting = res.meeting_times[i]
+        console.log(curMeeting)
+        if(curMeeting.day == "Monday") {
+            document.getElementById('monday').checked = true
+            document.getElementById('timeM').value = curMeeting.time
+            document.getElementById('locationM').value = curMeeting.location
+        }
+        if(curMeeting.day == "Tuesday") {
+            console.log("day is tuesday")
+            document.getElementById('tuesday').checked = true
+            document.getElementById('timeTU').value = curMeeting.time
+            document.getElementById('locationTU').value = curMeeting.location
+        }
+        if(curMeeting.day == "Wednesday") {
+            document.getElementById('wednesday').checked = true
+            document.getElementById('timeW').value = curMeeting.time
+            document.getElementById('locationW').value = curMeeting.location
+        }
+        if(curMeeting.day == "Thursday") {
+            document.getElementById('thursday').checked = true
+            document.getElementById('timeTH').value = curMeeting.time
+            document.getElementById('locationTH').value = curMeeting.location
+        }
+        if(curMeeting.day == "Friday") {
+            document.getElementById('friday').checked = true
+            document.getElementById('timeF').value = curMeeting.time
+            document.getElementById('locationF').value = curMeeting.location
+        }
+        if(curMeeting.day == "Saturday") {
+            document.getElementById('saturday').checked = true
+            document.getElementById('timeSA').value = curMeeting.time
+            document.getElementById('locationSA').value = curMeeting.location
+        }
+        if(curMeeting.day == "Sunday") {
+            document.getElementById('sunday').checked = true
+            document.getElementById('timeSU').value = curMeeting.time
+            document.getElementById('locationSU').value = curMeeting.location
+        }
+    }
+
 
     console.log("editModal")
     let modalContainer = document.getElementById('modalContainer')
@@ -154,7 +213,59 @@ let save = async function() {
     let description = document.getElementById('description').value
     let school = document.getElementById('school').value
     let courseCode = document.getElementById('courseCode').value
-    
+    let meeting_times = []
+
+    if (document.getElementById('monday').checked) {
+        meeting_times.push({
+            "day": "Monday",
+            "time": document.getElementById('timeM').value,
+            "location": document.getElementById('locationM').value
+        })
+        console.log(meeting_times[0])
+    }
+    if (document.getElementById('tuesday').checked) {
+        meeting_times.push({
+            "day": "Tuesday",
+            "time": document.getElementById('timeTU').value,
+            "location": document.getElementById('locationTU').value
+        })
+    }
+    if (document.getElementById('wednesday').checked) {
+        meeting_times.push({
+            "day": "Wednesday",
+            "time": document.getElementById('timeW').value,
+            "location": document.getElementById('locationW').value
+        })
+    }
+    if (document.getElementById('thursday').checked) {
+        meeting_times.push({
+            "day": "Thursday",
+            "time": document.getElementById('timeTH').value,
+            "location": document.getElementById('locationTH').value
+        })
+    }
+    if (document.getElementById('friday').checked) {
+        meeting_times.push({
+            "day": "Friday",
+            "time": document.getElementById('timeF').value,
+            "location": document.getElementById('locationF').value
+        })
+    }
+    if (document.getElementById('saturday').checked) {
+        meeting_times.push({
+            "day": "Saturday",
+            "time": document.getElementById('timeSA').value,
+            "location": document.getElementById('locationSA').value
+        })
+    }
+    if (document.getElementById('sunday').checked) {
+        meeting_times.push({
+            "day": "Sunday",
+            "time": document.getElementById('timeSU').value,
+            "location": document.getElementById('locationSU').value
+        })
+    }
+
     const studygroup = {
         "name": name,
         "school": school,
@@ -164,8 +275,8 @@ let save = async function() {
         "end_date": endDate,
         "description": description,
         "course_number": courseCode,
-        /*"is_public": public,
-        "meeting_times": meeting_times*/
+        /*"is_public": public,*/
+        "meeting_times": meeting_times
     }
     const token = localStorage.getItem("token")
     const options = {
@@ -192,4 +303,6 @@ let save = async function() {
         console.log(response.status)
     }
     modalContainer.style.display = "none";
+    studyGroups(localStorage.getItem('url'))
+    //location.reload()
 }

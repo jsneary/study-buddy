@@ -35,6 +35,9 @@
         <label for="onGoing"></label>Active</label>
         <input type="checkbox" id="onGoing" name="onGoing" class="searchInput">
 
+        <label for="mine"></label>My Groups Only</label>
+        <input type="checkbox" id="mine" name="mine" class="searchInput">
+
         <label for="skip"></label>Skip</label>
         <input type="number" id="skip" name="skip" class="searchInput">
 
@@ -43,7 +46,7 @@
 
         
 
-        <input type="button" value="Search" id='submit' onclick="studyGroups()">
+        <input type="button" value="Search" id='submit' onclick="studyGroups('none')">
     </div>
 
     <table id="table">
@@ -80,6 +83,68 @@
         
                 <label for="courseCode">Course Code</label><br>
                 <input type="text" id="courseCode" name="courseCode" class="mainInput"><br>
+
+
+
+                <ul id="meetingTimes">        
+                    <li>
+                        <input type="checkbox" class="FL" id="monday">
+                        <label for="monday" class="FL">Monday</label><br> 
+                        <label for="timeM" class="FL">Time: &nbsp;</label>
+                        <input type="text" id="timeM" name="time" class="FL">
+                        <label for="locationM" class="FL">&nbsp;Location: &nbsp;</label> 
+                        <input type="text" id="locationM" name="location" class="FL"><br><br>
+
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="tuesday">
+                        <label for="tuesday" class="FL">Tuesday</label><br> 
+                        <label for="timeTU" class="FL">Time: &nbsp;</label> 
+                        <input type="text" id="timeTU" name="time" class="FL">
+                        <label for="locationTU" class="FL">&nbsp;Location: &nbsp;</label> 
+                        <input type="text" id="locationTU" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="wednesday">
+                        <label for="wednesday" class="FL">Wednesday</label><br> 
+                        <label for="timeW" class="FL">Time: &nbsp;</label> 
+                        <input type="text" id="timeW" name="time" class="FL">
+                        <label for="locationW" class="FL">&nbsp;Location: &nbsp;</label> 
+                        <input type="text" id="locationW" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="thursday">
+                        <label for="tuesday" class="FL">Thursday</label><br> 
+                        <label for="timeTH" class="FL">Time: &nbsp;</label> 
+                        <input type="text" id="timeTH" name="time" class="FL">
+                        <label for="locationTH" class="FL">&nbsp;Location: &nbsp;</label> 
+                        <input type="text" id="locationTH" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="friday">
+                        <label for="friday" class="FL">Friday</label><br> 
+                        <label for="timeF" class="FL">Time: &nbsp;</label> 
+                        <input type="text" id="timeF" name="time" class="FL">
+                        <label for="locationF" class="FL">&nbsp;Location: &nbsp;</label> 
+                        <input type="text" id="locationF" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="saturday">
+                        <label for="saturday" class="FL">Saturday</label><br> 
+                        <label for="timeSA" class="FL">Time: &nbsp;</label> 
+                        <input type="text" id="timeSA" name="time" class="FL">
+                        <label for="locationSA" class="FL">&nbsp;Location: &nbsp;</label> 
+                        <input type="text" id="locationSA" name="location" class="FL"><br><br>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="FL" id="sunday">
+                        <label for="sunday" class="FL">Sunday</label><br> 
+                        <label for="timeSU" class="FL">Time: &nbsp;</label> 
+                        <input type="text" id="timeSU" name="time" class="FL">
+                        <label for="locationSU" class="FL">&nbsp;Location: &nbsp;</label> 
+                        <input type="text" id="locationSU" name="location" class="FL"><br><br>
+                    </li>
+                </ul>
 
                 <input type="button" value="Save" id='saveButton' onclick="save()">
             </form>
