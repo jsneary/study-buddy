@@ -152,7 +152,7 @@ let editModal = function(res) {
     document.getElementById('description').value = res.description
     document.getElementById('school').value = res.school
     document.getElementById('courseCode').value = res.course_number
-    
+    document.getElementById('public').checked = res.is_public
 
     for (i = 0; i < res.meeting_times.length; i++){
         let curMeeting = res.meeting_times[i]
@@ -213,6 +213,7 @@ let save = async function() {
     let description = document.getElementById('description').value
     let school = document.getElementById('school').value
     let courseCode = document.getElementById('courseCode').value
+    let public = document.getElementById('public').checked
     let meeting_times = []
 
     if (document.getElementById('monday').checked) {
@@ -275,7 +276,7 @@ let save = async function() {
         "end_date": endDate,
         "description": description,
         "course_number": courseCode,
-        /*"is_public": public,*/
+        "is_public": public,
         "meeting_times": meeting_times
     }
     const token = localStorage.getItem("token")
