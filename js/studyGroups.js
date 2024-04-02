@@ -8,10 +8,9 @@ let studyGroups = async function(URL) {
         let desc = document.getElementById('desc').checked
         let onGoing = document.getElementById('onGoing').checked
         let mine = document.getElementById('mine').checked
+        let joined = document.getElementById('joined').checked
         let skip = document.getElementById('skip').value
         let limit = document.getElementById('limit').value
-        console.log(skip)
-
         
         if (search.length > 0) {
             url = url + "?search=" + search + "&"
@@ -31,6 +30,9 @@ let studyGroups = async function(URL) {
         if (mine) {
             url = url + "mine=true&"
         }
+        if (joined) {
+            url = url + "member=true&"
+        }
         if (skip > 0) {
             url = url + "skip=" + skip + "&"
         }
@@ -45,24 +47,19 @@ let studyGroups = async function(URL) {
         url = URL;
     }
     const token = localStorage.getItem("token")
-    //console.log(token);
     const options = {
         method: "GET",
         headers: { 
             Authorization: `Bearer ${token}`
             /*"Content-Type": "application/json"*/
         }
-        //body: JSON.stringify(studygroup)
     }
-
-    console.log("sending request")
     let response = await fetch(url, options)
 
     if (response.status == 200) {
 
         const res = await response.json();
         console.log(res)
-        let groups = document.getElementById('groups');
 
         document.querySelectorAll('.searchResults').forEach(e => e.remove());
         let table = document.getElementById('table')
@@ -80,7 +77,6 @@ let studyGroups = async function(URL) {
                 let editButton = document.createElement('input')
                 editButton.type = "button"
                 editButton.value = res[i].name
-                console.log("ids match")
                 //editButton.style.margin = "0 auto 0 auto"
                 editButton.id = "editButton"
                 
@@ -123,21 +119,48 @@ let studyGroups = async function(URL) {
             nextCol.style.textAlign = "center"
             nextRow.appendChild(nextCol)
 
-            console.log(res[i].name)
-            console.log(res[i].owner)
-            //groups.innerHTML = "<tr><td>name</td><td>school</td><td>course</td><td>description</td><td>start date</td><td>end date</td></tr>"
-        }
+            nextCol = document.createElement('td')
+            nextCol.innerHTML = res[i].participants.length + "/" + res[i].max_participants
+            nextCol.style.textAlign = "center"
+            nextRow.appendChild(nextCol)
 
-        
+
+            nextCol = document.createElement('td')
+            if (localStorage.getItem('id') != res[i].owner) {
+                console.log("ID: " + localStorage.getItem('id'))
+                console.log(res[i].participants + " & " + localStorage.getItem('id'))
+                
+                
+                joinButton = document.createElement('input')
+                joinButton.setAttribute("id", res[i]._id)   
+                joinButton.setAttribute("type", "button")
+                let curRes = res[i]
+                if(res[i].participants.indexOf(localStorage.getItem('id')) == -1) {
+                    joinButton.setAttribute("value", "Join")
+                    joinButton.addEventListener('click', function(){join(curRes, true)}, false)
+                }
+                else {
+                    console.log("in group")
+                    joinButton.setAttribute("value", "Leave")
+                    joinButton.addEventListener('click', function(){join(curRes, false)}, false)
+                }
+                
+                joinButton.setAttribute("class", "joinButton")
+                
+                
+                nextCol.appendChild(joinButton)
+            }
+            nextCol.style.textAlign = "center"
+            
+            nextRow.appendChild(nextCol)
+        }        
 
         setTimeout(() => {
             //location.href = "main.html"
         }, 2000)
     }
     else {
-
         console.log("study group request error")
-        console.log(response.status)
     }
 }
 
@@ -156,14 +179,12 @@ let editModal = function(res) {
 
     for (i = 0; i < res.meeting_times.length; i++){
         let curMeeting = res.meeting_times[i]
-        console.log(curMeeting)
         if(curMeeting.day == "Monday") {
             document.getElementById('monday').checked = true
             document.getElementById('timeM').value = curMeeting.time
             document.getElementById('locationM').value = curMeeting.location
         }
         if(curMeeting.day == "Tuesday") {
-            console.log("day is tuesday")
             document.getElementById('tuesday').checked = true
             document.getElementById('timeTU').value = curMeeting.time
             document.getElementById('locationTU').value = curMeeting.location
@@ -195,8 +216,6 @@ let editModal = function(res) {
         }
     }
 
-
-    console.log("editModal")
     let modalContainer = document.getElementById('modalContainer')
     modalContainer.style.display = "block";
 }
@@ -222,7 +241,6 @@ let save = async function() {
             "time": document.getElementById('timeM').value,
             "location": document.getElementById('locationM').value
         })
-        console.log(meeting_times[0])
     }
     if (document.getElementById('tuesday').checked) {
         meeting_times.push({
@@ -270,7 +288,6 @@ let save = async function() {
     const studygroup = {
         "name": name,
         "school": school,
-
         "max_participants": maxParticipants,
         "start_date": startDate,
         "end_date": endDate,
@@ -293,8 +310,35 @@ let save = async function() {
     let response = await fetch(url, options)
 
     if (response.status == 200) {
-
         console.log("Study Group Patched")
+        console.log(response)
+    }
+    else {
+        console.log("request error")
+        console.log(response.status)
+    }
+    modalContainer.style.display = "none";
+    studyGroups(localStorage.getItem('url'))
+    //location.reload()
+}
+
+let del = async function() {
+    let url = "https://studybuddy-api.azurewebsites.net/studygroup/" + localStorage.getItem('openModal')
+    const token = localStorage.getItem("token")
+    const options = {
+        method: "DELETE",
+        headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
+    }
+
+    console.log("sending delete request")
+    let response = await fetch(url, options)
+
+    if (response.status == 200) {
+
+        console.log("Study Group Deleted")
         console.log(response)
 
     }
@@ -305,5 +349,49 @@ let save = async function() {
     }
     modalContainer.style.display = "none";
     studyGroups(localStorage.getItem('url'))
-    //location.reload()
+}
+
+let join = async function(res, join) {
+    let url
+    if (join) {
+        url = "https://studybuddy-api.azurewebsites.net/studygroup/" + res._id + "/participants?add"
+    }
+    else {
+        url = "https://studybuddy-api.azurewebsites.net/studygroup/" + res._id + "/participants?remove"
+    }
+    
+    const token = localStorage.getItem("token")
+    body = {
+        "participants": localStorage.getItem('id')
+    }
+    console.log("ID: " + localStorage.getItem('id'))
+    const options = {
+        method: "PATCH",
+        headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+
+    let response = await fetch(url, options)
+    if (response.status == 200) {
+        console.log("Study Group Patched")
+        console.log(response)
+        if (join) {
+            document.getElementById(res._id).setAttribute("value", "Leave")
+            console.log(res._id)
+            console.log(document.getElementById(res._id))
+        }
+        else {
+            document.getElementById(res._id).setAttribute("value", "Join")
+            console.log(res._id)
+            console.log(document.getElementById(res._id))
+        }
+    }
+    else {
+        console.log("request error")
+        console.log(response.status)
+    }
+    studyGroups(localStorage.getItem('url'))
 }

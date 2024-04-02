@@ -83,11 +83,12 @@ li {
 #table {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid #333;
+    border: 0px solid #333;
 }
 th {
     border: 2px solid #A0ACFF;
 }
+
 td {
     border: 1px solid #333;
     padding: 3px;
@@ -100,13 +101,13 @@ tr {
     width: 15%;
 }
 #tableSchool {
-    width: 15%;
+    width: 10%;
 }
 #tableCourse {
     width: 10%;
 }
 #tableDescription {
-    width: 40%;
+    width: 35%;
 }
 #tableStartDate {
     width: 10%;
@@ -114,7 +115,21 @@ tr {
 #tableEndDate {
     width: 10%;
 }
-
+#tableParticipants {
+    width: 5%
+}
+#tableJoin {
+    width: 5%
+}
+th:last-child {
+    border: none;
+}
+td:last-child {
+    border :none;
+}
+#tableJoin {
+    border: none;
+}
 
 
 /*modal stuff*/
