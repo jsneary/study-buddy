@@ -167,8 +167,11 @@ td:last-child {
     /*height: 80%;*/
 }
 #meetingTimes {
-    margin: auto;
-    padding: auto;
+    text-align: center;
+}
+#ulMeetingTimes {
+    display: inline-block;
+    text-align: center;
 }
 /*form {
     margin: auto;

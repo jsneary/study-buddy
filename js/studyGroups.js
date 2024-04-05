@@ -164,7 +164,7 @@ let studyGroups = async function(URL) {
     }
 }
 
-let editModal = function(res) {
+let editModal = async function(res) {
     console.log(res)
     localStorage.setItem('openModal', res._id)
     
@@ -176,6 +176,37 @@ let editModal = function(res) {
     document.getElementById('school').value = res.school
     document.getElementById('courseCode').value = res.course_number
     document.getElementById('public').checked = res.is_public
+
+    let participantNames = ""
+    const token = localStorage.getItem("token")
+    const options = {
+        method: "GET",
+        headers: { 
+            Authorization: `Bearer ${token}`
+        }
+    }
+    for (let i = 0; i < res.participants.length; i++) {
+        
+        let participantURL = "https://studybuddy-api.azurewebsites.net/user/" + res.participants[i]
+
+        let response = await fetch(participantURL, options)
+        console.log(response.body)
+        if (response.status == 200) {
+
+            const user = await response.json();
+
+            if (i < res.participants.length - 1) {
+                participantNames = participantNames + user.user.username + ", "
+            }
+            else {
+                participantNames = participantNames + user.user.username
+            }
+        }
+        else {
+            console.log("error getting user")
+        }
+    }
+    document.getElementById('participants').innerHTML = participantNames
 
     for (i = 0; i < res.meeting_times.length; i++){
         let curMeeting = res.meeting_times[i]
@@ -323,32 +354,31 @@ let save = async function() {
 }
 
 let del = async function() {
-    let url = "https://studybuddy-api.azurewebsites.net/studygroup/" + localStorage.getItem('openModal')
-    const token = localStorage.getItem("token")
-    const options = {
-        method: "DELETE",
-        headers: { 
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
+    if (confirm("Are you sure you want to delete this group?")) {
+        let url = "https://studybuddy-api.azurewebsites.net/studygroup/" + localStorage.getItem('openModal')
+        const token = localStorage.getItem("token")
+        const options = {
+            method: "DELETE",
+            headers: { 
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
         }
+
+        console.log("sending delete request")
+        let response = await fetch(url, options)
+
+        if (response.status == 200) {
+            console.log("Study Group Deleted")
+            console.log(response)
+        }
+        else {
+            console.log("request error")
+            console.log(response.status)
+        }
+        modalContainer.style.display = "none";
+        studyGroups(localStorage.getItem('url'))
     }
-
-    console.log("sending delete request")
-    let response = await fetch(url, options)
-
-    if (response.status == 200) {
-
-        console.log("Study Group Deleted")
-        console.log(response)
-
-    }
-    else {
-
-        console.log("request error")
-        console.log(response.status)
-    }
-    modalContainer.style.display = "none";
-    studyGroups(localStorage.getItem('url'))
 }
 
 let join = async function(res, join) {
