@@ -92,6 +92,19 @@ li {
     color: white;
 }
 
+.removeButton {
+    background-color: white;
+    color: black;
+    border: 3px solid #A0ACFF;
+    border-radius: 20px;
+    transition-duration: 0.2s;
+    padding: 3px 2% 3px 2%;
+}
+.removeButton:hover {
+    background-color: #A0ACFF;
+    color: white;
+}
+
 #table {
     width: 100%;
     border-collapse: collapse;
@@ -172,6 +185,15 @@ td:last-child {
 #ulMeetingTimes {
     display: inline-block;
     text-align: center;
+    
+}
+
+.removeUser {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    line-height: 32px;
 }
 /*form {
     margin: auto;

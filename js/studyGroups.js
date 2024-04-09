@@ -137,12 +137,12 @@ let studyGroups = async function(URL) {
                 let curRes = res[i]
                 if(res[i].participants.indexOf(localStorage.getItem('id')) == -1) {
                     joinButton.setAttribute("value", "Join")
-                    joinButton.addEventListener('click', function(){join(curRes, true)}, false)
+                    joinButton.addEventListener('click', function(){join(curRes._id, true)}, false)
                 }
                 else {
                     console.log("in group")
                     joinButton.setAttribute("value", "Leave")
-                    joinButton.addEventListener('click', function(){join(curRes, false)}, false)
+                    joinButton.addEventListener('click', function(){join(curRes._id, false)}, false)
                 }
                 
                 joinButton.setAttribute("class", "joinButton")
@@ -178,6 +178,7 @@ let editModal = async function(res) {
     document.getElementById('public').checked = res.is_public
 
     let participantNames = ""
+    let names = []
     const token = localStorage.getItem("token")
     const options = {
         method: "GET",
@@ -195,18 +196,41 @@ let editModal = async function(res) {
 
             const user = await response.json();
 
+            names.push(user.user.username)
             if (i < res.participants.length - 1) {
                 participantNames = participantNames + user.user.username + ", "
             }
             else {
                 participantNames = participantNames + user.user.username
             }
+
+
+
+
+            
+            let nameContainer = document.createElement('div')
+            nameContainer.setAttribute('id', res.participants[i])
+            nameContainer.setAttribute('class', 'removeUser')
+            document.getElementById('participants').appendChild(nameContainer)
+            nameContainer.innerHTML = user.user.username + "&nbsp"
+            
+            //let newName = document.createElement('div')
+            //newName.innerHTML = user.user.username
+            
+            let newButton = document.createElement('input')
+            newButton.setAttribute('type', 'button')
+            newButton.setAttribute('value', 'Remove')
+            newButton.setAttribute('class', 'removeButton')
+            newButton.addEventListener('click', function(){removeUser(res.participants[i])}, false)
+            
+            //nameContainer.appendChild(newName)
+            nameContainer.appendChild(newButton)
         }
         else {
             console.log("error getting user")
         }
     }
-    document.getElementById('participants').innerHTML = participantNames
+    //document.getElementById('participants').innerHTML = participantNames
 
     for (i = 0; i < res.meeting_times.length; i++){
         let curMeeting = res.meeting_times[i]
@@ -381,13 +405,13 @@ let del = async function() {
     }
 }
 
-let join = async function(res, join) {
+let join = async function(id, join) {
     let url
     if (join) {
-        url = "https://studybuddy-api.azurewebsites.net/studygroup/" + res._id + "/participants?add"
+        url = "https://studybuddy-api.azurewebsites.net/studygroup/" + id + "/participants?add"
     }
     else {
-        url = "https://studybuddy-api.azurewebsites.net/studygroup/" + res._id + "/participants?remove"
+        url = "https://studybuddy-api.azurewebsites.net/studygroup/" + id + "/participants?remove"
     }
     
     const token = localStorage.getItem("token")
@@ -409,14 +433,14 @@ let join = async function(res, join) {
         console.log("Study Group Patched")
         console.log(response)
         if (join) {
-            document.getElementById(res._id).setAttribute("value", "Leave")
-            console.log(res._id)
-            console.log(document.getElementById(res._id))
+            document.getElementById(id).setAttribute("value", "Leave")
+            console.log(id)
+            console.log(document.getElementById(id))
         }
         else {
-            document.getElementById(res._id).setAttribute("value", "Join")
-            console.log(res._id)
-            console.log(document.getElementById(res._id))
+            document.getElementById(id).setAttribute("value", "Join")
+            console.log(id)
+            console.log(document.getElementById(id))
         }
     }
     else {
@@ -424,4 +448,88 @@ let join = async function(res, join) {
         console.log(response.status)
     }
     studyGroups(localStorage.getItem('url'))
+}
+let removeUser = async function(id) {
+    console.log("REMOVE USER")
+
+    console.log("OPEN MODAL:")
+    console.log(localStorage.getItem('openModal'))
+    let studyGroupID = localStorage.getItem('openModal')
+
+    let url = "https://studybuddy-api.azurewebsites.net/studygroup/" + studyGroupID + "/participants?remove"
+    
+    
+    const token = localStorage.getItem("token")
+    body = {
+        "participants": id
+    }
+
+    const options = {
+        method: "PATCH",
+        headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+
+    let response = await fetch(url, options)
+    if (response.status == 200) {
+        console.log("Study Group Patched")
+        console.log(response)
+
+        document.getElementById(id).remove()
+        
+    }
+    else {
+        console.log("request error")
+        console.log(response.status)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*const studygroup = {
+        "name": name,
+        "school": school,
+        "max_participants": maxParticipants,
+        "start_date": startDate,
+        "end_date": endDate,
+        "description": description,
+        "course_number": courseCode,
+        "is_public": public,
+        "meeting_times": meeting_times
+    }
+    const token = localStorage.getItem("token")
+    const options = {
+        method: "PATCH",
+        headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(studygroup)
+    }
+
+    console.log("sending patch request")
+    let response = await fetch(url, options)
+
+    if (response.status == 200) {
+        console.log("Study Group Patched")
+        console.log(response)
+    }
+    else {
+        console.log("request error")
+        console.log(response.status)
+    }*/
 }
