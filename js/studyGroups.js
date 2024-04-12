@@ -59,7 +59,7 @@ let studyGroups = async function(URL) {
     if (response.status == 200) {
 
         const res = await response.json();
-        console.log(res)
+        //console.log(res)
 
         document.querySelectorAll('.searchResults').forEach(e => e.remove());
         let table = document.getElementById('table')
@@ -119,28 +119,39 @@ let studyGroups = async function(URL) {
             nextCol.style.textAlign = "center"
             nextRow.appendChild(nextCol)
 
+
             nextCol = document.createElement('td')
-            nextCol.innerHTML = res[i].participants.length + "/" + res[i].max_participants
+            //nextCol.innerHTML = res[i].participants.length + "/" + res[i].max_participants
+            let participantText = res[i].participants.length + "/" + res[i].max_participants
             nextCol.style.textAlign = "center"
+
+            let participantButton = document.createElement('input')
+            participantButton.setAttribute('value', participantText)
+            participantButton.setAttribute('type', 'button')
+            //participantButton.setAttribute('id', 'participantButton')
+            participantButton.setAttribute('class', 'button')
+            let curRes = res[i]
+            participantButton.addEventListener('click', function(){participantModal(curRes)}, false)
+            nextCol.appendChild(participantButton)
             nextRow.appendChild(nextCol)
 
 
             nextCol = document.createElement('td')
             if (localStorage.getItem('id') != res[i].owner) {
-                console.log("ID: " + localStorage.getItem('id'))
-                console.log(res[i].participants + " & " + localStorage.getItem('id'))
+                //console.log("ID: " + localStorage.getItem('id'))
+                //console.log(res[i].participants + " & " + localStorage.getItem('id'))
                 
                 
                 joinButton = document.createElement('input')
                 joinButton.setAttribute("id", res[i]._id)   
                 joinButton.setAttribute("type", "button")
-                let curRes = res[i]
+                //let curRes = res[i]
                 if(res[i].participants.indexOf(localStorage.getItem('id')) == -1) {
                     joinButton.setAttribute("value", "Join")
                     joinButton.addEventListener('click', function(){join(curRes._id, true)}, false)
                 }
                 else {
-                    console.log("in group")
+                    //console.log("in group")
                     joinButton.setAttribute("value", "Leave")
                     joinButton.addEventListener('click', function(){join(curRes._id, false)}, false)
                 }
@@ -165,7 +176,7 @@ let studyGroups = async function(URL) {
 }
 
 let editModal = async function(res) {
-    console.log(res)
+    //console.log(res)
     localStorage.setItem('openModal', res._id)
     
     document.getElementById('name').value = res.name
@@ -191,7 +202,7 @@ let editModal = async function(res) {
         let participantURL = "https://studybuddy-api.azurewebsites.net/user/" + res.participants[i]
 
         let response = await fetch(participantURL, options)
-        console.log(response.body)
+        //console.log(response.body)
         if (response.status == 200) {
 
             const user = await response.json();
@@ -273,6 +284,95 @@ let editModal = async function(res) {
 
     let modalContainer = document.getElementById('modalContainer')
     modalContainer.style.display = "block";
+}
+
+let participantModal = async function(res) {
+
+    //console.log("WORKING")
+    localStorage.setItem('openModal', res._id)
+    console.log(res)
+
+    let participantNames = ""
+    let names = []
+    const token = localStorage.getItem("token")
+    const options = {
+        method: "GET",
+        headers: { 
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+
+
+    let participantURL = "https://studybuddy-api.azurewebsites.net/user/" + res.owner
+
+    let response = await fetch(participantURL, options)
+
+    const owner = await response.json();
+
+    console.log(owner)
+
+    let nameContainer = document.createElement('div')
+    if (res.participants == 0) {
+        document.getElementById('modalParticipants').appendChild(nameContainer)
+        nameContainer.innerHTML = "Owner: " + owner.user.username
+    }
+    else {
+        document.getElementById('modalParticipants').appendChild(nameContainer)
+        //nameContainer.innerHTML = "Owner: " + owner.user.username + ","
+        nameContainer.innerHTML = "Owner: " + owner.user.username 
+    }
+    
+    console.log("Owner: " + owner.user.username)
+
+    //document.getElementById('modalParticipants').appendChild(nameContainer)
+    //nameContainer.innerHTML = user.user.username + "&nbsp"
+
+
+
+    console.log("participants: " + participantNames)
+
+    for (let i = 0; i < res.participants.length; i++) {
+        
+        participantURL = "https://studybuddy-api.azurewebsites.net/user/" + res.participants[i]
+
+        response = await fetch(participantURL, options)
+        //console.log(response.body)
+        if (response.status == 200) {
+
+            const user = await response.json();
+            console.log("User:")
+            console.log(user.user)
+            names.push(user.user.username)
+
+            console.log("Participant names: " + participantNames)
+            if (i < res.participants.length - 1) {
+                participantNames = participantNames + user.user.username + ", "
+            }
+            else {
+                participantNames = participantNames + user.user.username
+            }
+
+            console.log("Participant names: " + participantNames)
+            nameContainer = document.createElement('div')
+            document.getElementById('modalParticipants').appendChild(nameContainer)
+            nameContainer.innerHTML = user.user.username + "&nbsp"
+
+
+        }
+        else {
+            console.log("error getting user")
+        }
+    }
+
+    let modalContainer = document.getElementById('participantModalContainer')
+    modalContainer.style.display = "block";
+}
+let closeParticipantModal = function() {
+    //console.log("close participant")
+    document.getElementById('modalParticipants').innerHTML = ""
+    let modalContainer = document.getElementById('participantModalContainer')
+    modalContainer.style.display = "none";
 }
 
 let save = async function() {
