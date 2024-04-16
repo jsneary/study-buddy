@@ -313,7 +313,7 @@ let participantModal = async function(res) {
     console.log(owner)
 
     let nameContainer = document.createElement('div')
-    if (res.participants == 0) {
+    /*if (res.participants == 0) {
         document.getElementById('modalParticipants').appendChild(nameContainer)
         nameContainer.innerHTML = "Owner: " + owner.user.username
     }
@@ -321,8 +321,16 @@ let participantModal = async function(res) {
         document.getElementById('modalParticipants').appendChild(nameContainer)
         //nameContainer.innerHTML = "Owner: " + owner.user.username + ","
         nameContainer.innerHTML = "Owner: " + owner.user.username 
-    }
-    
+    }*/
+    document.getElementById('modalParticipants').appendChild(nameContainer)
+    nameContainer.innerHTML = "Owner: " + owner.user.username + "&nbsp"
+    nameContainer.style.padding = '10px';
+    let newButton = document.createElement('input')
+    newButton.setAttribute('type', 'button')
+    newButton.setAttribute('value', 'Messsage')
+    newButton.setAttribute('class', 'messageButton')
+    newButton.addEventListener('click', function(){openMessageModal(res.owner, owner.user.username)}, false)
+    nameContainer.appendChild(newButton)
     console.log("Owner: " + owner.user.username)
 
     //document.getElementById('modalParticipants').appendChild(nameContainer)
@@ -355,9 +363,16 @@ let participantModal = async function(res) {
 
             console.log("Participant names: " + participantNames)
             nameContainer = document.createElement('div')
+            nameContainer.style.padding = '10px';
             document.getElementById('modalParticipants').appendChild(nameContainer)
             nameContainer.innerHTML = user.user.username + "&nbsp"
 
+            let newButton = document.createElement('input')
+            newButton.setAttribute('type', 'button')
+            newButton.setAttribute('value', 'Messsage')
+            newButton.setAttribute('class', 'messageButton')
+            newButton.addEventListener('click', function(){openMessageModal(res.participants[i], user.user.username)}, false)
+            nameContainer.appendChild(newButton)
 
         }
         else {
@@ -549,15 +564,65 @@ let join = async function(id, join) {
     }
     studyGroups(localStorage.getItem('url'))
 }
+let sendMessage = async function(id) {
+    console.log("Sending message...")
+    let subject = document.getElementById('subject').value
+    let body = document.getElementById('body').value
+    console.log(subject)
+
+    let url = "https://studybuddy-api.azurewebsites.net/notification"
+    const message = {
+        "subject": subject,
+        "body": body,
+        "recieverId": id
+    }
+    const token = localStorage.getItem("token")
+    const options = {
+        method: "POST",
+        headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(message)
+    }
+    let response = await fetch(url, options)
+
+    if (response.status == 201) {
+        console.log("Notification Created")
+        console.log(response)
+    }
+    else {
+        console.log("request error")
+        console.log(response.status)
+    }
+}
+let closeMessageModal = function() {
+    document.getElementById('modalMessages').innerHTML = ""
+    let modalContainer = document.getElementById('messageModalContainer')
+    modalContainer.style.display = "none";
+}
+let openMessageModal = async function (id, name){
+    console.log(name)
+    console.log(id)
+    closeParticipantModal();
+
+    let modalMessages = document.getElementById('modalMessages')
+    modalMessages.innerHTML = "Message " + name
+    modalMessages.style.padding = "0 0 10px 0"
+    console.log("modalMessages")
+
+    let modalContainer = document.getElementById('messageModalContainer')
+    modalContainer.style.display = "block";
+    
+    let sendButton = document.getElementById('sendMessage')
+    sendButton.addEventListener('click', function(){sendMessage(id)}, false)
+}
 let removeUser = async function(id) {
     console.log("REMOVE USER")
-
-    console.log("OPEN MODAL:")
     console.log(localStorage.getItem('openModal'))
     let studyGroupID = localStorage.getItem('openModal')
 
     let url = "https://studybuddy-api.azurewebsites.net/studygroup/" + studyGroupID + "/participants?remove"
-    
     
     const token = localStorage.getItem("token")
     body = {
@@ -572,64 +637,89 @@ let removeUser = async function(id) {
         },
         body: JSON.stringify(body)
     }
-
     let response = await fetch(url, options)
     if (response.status == 200) {
         console.log("Study Group Patched")
         console.log(response)
-
-        document.getElementById(id).remove()
-        
+        document.getElementById(id).remove()      
     }
     else {
         console.log("request error")
         console.log(response.status)
     }
+}
+let displayNotifications = async function() {
+    let dropdownContent = document.getElementById('dropdownContent');
+    console.log("Count: " + dropdownContent.childElementCount)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*const studygroup = {
-        "name": name,
-        "school": school,
-        "max_participants": maxParticipants,
-        "start_date": startDate,
-        "end_date": endDate,
-        "description": description,
-        "course_number": courseCode,
-        "is_public": public,
-        "meeting_times": meeting_times
+    if (dropdownContent.childElementCount > 0) {
+        dropdownContent.classList.toggle("show");
+        dropdownContent.innerHTML = '';
+        return;
     }
-    const token = localStorage.getItem("token")
+
+    let url = "https://studybuddy-api.azurewebsites.net/notifications";
+
+    const token = localStorage.getItem("token");
+    console.log("ID: " + localStorage.getItem('id'));
     const options = {
-        method: "PATCH",
+        method: "GET",
         headers: { 
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(studygroup)
+        }
     }
+    let response = await fetch(url, options);
 
-    console.log("sending patch request")
-    let response = await fetch(url, options)
+    const res = await response.json();
+    console.log("res:");
+    console.log(res);
+    console.log(res.notifications[0]);
 
-    if (response.status == 200) {
-        console.log("Study Group Patched")
-        console.log(response)
+    for (let i = 0; i < res.notifications.length; i++) {
+        
+        url = "https://studybuddy-api.azurewebsites.net/user/" + res.notifications[i].senderId;
+
+        response = await fetch(url, options);
+        //console.log(response.body)
+        if (response.status == 200) {
+            let userRes = await response.json();
+            console.log(userRes.user.username);
+
+            //<input type="button" value="Notification1" id='123' onclick="displayNotification()">
+            let newNotification = document.createElement('input');
+            newNotification.setAttribute('type', 'button')
+            let notificationText = "Notification from " + userRes.user.username
+            newNotification.setAttribute('value', notificationText)
+            newNotification.addEventListener('click', function(){openNotificationModal(res.notifications[i], userRes.user.username)}, false)
+            dropdownContent.appendChild(newNotification);
+
+        }
     }
-    else {
-        console.log("request error")
-        console.log(response.status)
-    }*/
+    document.getElementById('dropdownContent').classList.toggle("show");
+}
+let closeNotificationModal = function() {
+    //document.getElementById('modalNotification').innerHTML = ""
+    let modalContainer = document.getElementById('notificationModalContainer')
+    modalContainer.style.display = "none";
+}
+let openNotificationModal = function(notification, sender) {
+    console.log("Notif modal")
+
+    let notificationSender = document.getElementById('notificationSender')
+    notificationSender.innerHTML = "Sender: " + sender
+    notificationSender.style.padding = "0 0 20px 0"
+
+    let notificationBody = document.getElementById('notificationBody')
+    notificationBody.innerHTML = notification.body
+    notificationBody.style.padding = "0 0 20px 0"
+
+    let notificationSubject = document.getElementById('notificationSubject')
+    notificationSubject.innerHTML = notification.subject
+    notificationSubject.style.padding = "0 0 20px 0"
+
+    let modalContainer = document.getElementById('notificationModalContainer')
+    modalContainer.style.display = "block";
+
+    //let sendButton = document.getElementById('sendMessage')
+    //sendButton.addEventListener('click', function(){sendMessage(id)}, false)
 }

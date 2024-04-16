@@ -12,6 +12,20 @@
     <div id="nav">
         <a class="navlink" href="index.html" onclick="logoutUser()">Logout</a>
         <a class="navlink" href="profile.html">Profile</a>
+        <div class="dropdown navlink2">
+            
+            <!--<button>Notifications</button>-->
+            <input type="button" value="Notifications" id='notificationButton' onclick="displayNotifications()">
+            <div id="dropdownContent" class="dropdownContent">
+                
+                <!--<input type="button" value="Notification1" id='123' onclick="displayNotification()">
+                <input type="button" value="Notification2" id='234' onclick="displayNotification()">
+                <input type="button" value="Notification3" id='234' onclick="displayNotification()">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>-->
+            </div>
+        </div>
         <a class="navlink" href="createStudyGroup.html">Create a Study Group</a>
         <a class="navlink" href="main.html">Home</a>
     </div>
@@ -165,6 +179,33 @@
         <div id="participantModalContent">
             <div id="modalParticipants"></div>
             <input type="button" value="close" id="closeParticipantModal" class="button" onclick="closeParticipantModal()">
+        </div>
+    </div>
+    <div id="messageModalContainer">
+        <div id="messageModalContent">
+            <div id="modalMessages"></div>
+
+            <label for="subject">Subject</label><br>
+            <input type="text" id="subject" name="subject" class="mainInput"><br>
+
+            <label for="body">Body</label><br>
+            <input type="text" id="body" name="body" class="mainInput"><br>
+
+            <input type="button" value="close" id="closeMessageModal" class="button" onclick="closeMessageModal()">
+            <input type="button" value="send" id="sendMessage" class="button" onclick="sendMessage()">
+        </div>
+    </div>
+    <div id="notificationModalContainer">
+        <div id="notificationModalContent">
+            <div id="notificationSender"></div>
+
+            <label for="subject">Subject</label><br>
+            <div id="notificationSubject"></div>
+
+            <label for="body">Body</label><br>
+            <div id="notificationBody"></div>
+
+            <input type="button" value="close" id="closeMessageModal" class="button" onclick="closeNotificationModal()">
         </div>
     </div>
     <script src="js/logout.js"></script>

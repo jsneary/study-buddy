@@ -13,3 +13,13 @@
 .navlink:hover {
     background-color: #888;
 }
+
+.navlink2 {
+    float: right;
+    color: #f2f2f2;
+    background-color: #444;
+    text-align: center;
+    padding: 0px;
+    font-size: 15px;
+    text-decoration: none;
+}
