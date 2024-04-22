@@ -23,3 +23,94 @@
     font-size: 15px;
     text-decoration: none;
 }
+
+#notificationModalContainer {
+    position: fixed;
+    z-index: 9;
+    display: none;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: black;
+    background-color: rgb(0,0,0,0.2);
+}
+#notificationModalContent {
+    text-align: center;
+    background-color: lightgray;
+    margin: auto;
+    padding: 10px;
+    width: 50%;
+    min-width: 300px;
+    margin-top: 5%;
+}
+
+.dropdown {
+    white-space: nowrap;
+    position: relative;
+    display: inline-block
+}
+.dropdownContent {
+    display: none;
+    z-index: 8;
+    position: fixed;
+    min-width: 200px;
+    overflow: auto;
+}
+.dropdownContent input {
+    color: black;
+    padding: 10px 10px;
+    display: block;
+    min-width: 200px;
+    text-decoration: none;
+}
+
+.show {
+    display: block;
+}
+#notificationButton {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 15px;
+}
+#notificationButton:hover {
+    background-color: #888;
+}
+
+#instaModalContainer {
+    position: fixed;
+    z-index: 2;
+    display: none;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: black;
+    background-color: rgb(0,0,0,0.2);
+}
+#instaModalContent {
+    text-align: center;
+    background-color: lightgray;
+    margin: auto;
+    padding: 10px;
+    width: 50%;
+    min-width: 300px;
+    margin-top: 5%;
+    /*height: 80%;*/
+}
+
+.button {
+    background-color: white;
+    color: black;
+    border: 3px solid #A0ACFF;
+    border-radius: 20px;
+    transition-duration: 0.2s;
+    padding: 3px 2% 3px 2%;
+}
+.button:hover {
+    background-color: #A0ACFF;
+    color: white;
+}

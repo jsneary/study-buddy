@@ -115,39 +115,30 @@
         </div><br>
         <label for="public"></label>Public</label>
         <input type="checkbox" id="public" name="public"><br>
-        <script>
-            let modal = document.getElementById('modal');
-            let button = document.getElementById('modalButton');
-            
-            button.onClick = function() {
-                //modal.style.display = "block";
-                console.log("button works")
-            }
-            let display = function() {
-                console.log(modal)
-                modal.style.display = "block";
-                console.log("button works")
-            }
-            let exit2 = function() {
-                console.log(modal)
-                modal.style.display = "none";
-                console.log("button2 works")
-            }
-            /*let close = function() {
-                console.log("close button works")
-                modal.style.display = "none";
+        <div id="instaModalContainer">
+            <div id="instaModalContent">
+                <!--<div id="notificationSender"></div>-->
+    
+                <label for="instaUsername">Username</label><br>
+                <input type="text" id="instaUsername" name="instaUsername" class="mainInput"><br>
+                <div id="instaUsername"></div>
+    
+                <label for="instaPassword">Password</label><br>
+                <input type="text" id="instaPassword" name="instaPassword" class="mainInput"><br>
+                <div id="instaPassword"></div>
+    
+                <input type="button" value="Close" class="button" onclick="closeInstaModal()">
+                <input type="button" value="Share to Instagram" class="button" onclick="postInsta('create')">
+                <input type="button" value="Save" class="button" onclick="saveInsta(true)">
                 
-            }*/
-        </script>
-        <!--<label for="meeting_times">Meeting Times</label><br>
-        <input type="checkbox" id="meeting_times" name="meeting_times"><br>-->
-
+            </div>
+        </div>
         
 
         <input type="button" value="Submit" id='submit' onclick="createStudyGroup()">
 
     </form>
-
+    <script src="js/instagram.js"></script>
     <script src="js/createStudyGroup.js"> </script>
     <script src="js/logout.js"></script>
 </body>

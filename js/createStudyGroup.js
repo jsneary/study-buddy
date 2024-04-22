@@ -1,4 +1,22 @@
-let createStudyGroup = async function() {
+let modal = document.getElementById('modal');
+let button = document.getElementById('modalButton');
+
+button.onClick = function () {
+
+    console.log("button works")
+}
+let display = function () {
+    console.log(modal)
+    modal.style.display = "block";
+    console.log("button works")
+}
+let exit2 = function () {
+    console.log(modal)
+    modal.style.display = "none";
+    console.log("button2 works")
+}
+
+let createStudyGroup = async function () {
 
     const url = "https://studybuddy-api.azurewebsites.net/studygroup"
 
@@ -94,7 +112,7 @@ let createStudyGroup = async function() {
     console.log(token);
     const options = {
         method: "POST",
-        headers: { 
+        headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         },
@@ -110,8 +128,9 @@ let createStudyGroup = async function() {
         console.log(response)
 
 
+        openInstaModal();
         setTimeout(() => {
-            location.href = "studyGroups.html"
+            //location.href = "studyGroups.html"
         }, 2000)
     }
     else {

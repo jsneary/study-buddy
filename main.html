@@ -9,13 +9,33 @@
     <div id="nav">
         <a class="navlink" href="index.html" onclick="logoutUser()">Logout</a>
         <a class="navlink" href="profile.html">Profile</a>
+        <div class="dropdown navlink2">
+            <input type="button" value="Notifications" id='notificationButton' onclick="displayNotifications()">
+            <div id="dropdownContent" class="dropdownContent">
+            </div>
+        </div>
         <a class="navlink" href="studyGroups.html">Study Groups</a>
         <a class="navlink" href="main.html">Home</a>
     </div>
     <h1>Main Page</h1><br>
 
+    <div id="notificationModalContainer">
+        <div id="notificationModalContent">
+            <div id="notificationSender"></div>
+
+            <label for="subject">Subject</label><br>
+            <div id="notificationSubject"></div>
+
+            <label for="body">Body</label><br>
+            <div id="notificationBody"></div>
+
+            <input type="button" value="close" id="closeMessageModal" class="button" onclick="closeNotificationModal()">
+        </div>
+    </div>
+    
     <script src="js/main.js"></script>
     <script src="js/logout.js"></script>
+    <script src="js/notifications.js"></script>
     
 </body>
 

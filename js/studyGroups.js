@@ -1,3 +1,5 @@
+//import { openInstaModal } from "./instagram"
+
 let studyGroups = async function(URL) {
     
     let url = "https://studybuddy-api.azurewebsites.net/studygroups"
@@ -214,9 +216,6 @@ let editModal = async function(res) {
             else {
                 participantNames = participantNames + user.user.username
             }
-
-
-
 
             
             let nameContainer = document.createElement('div')
@@ -528,7 +527,7 @@ let join = async function(id, join) {
     else {
         url = "https://studybuddy-api.azurewebsites.net/studygroup/" + id + "/participants?remove"
     }
-    
+    console.log(url)
     const token = localStorage.getItem("token")
     body = {
         "participants": localStorage.getItem('id')
@@ -551,6 +550,8 @@ let join = async function(id, join) {
             document.getElementById(id).setAttribute("value", "Leave")
             console.log(id)
             console.log(document.getElementById(id))
+            console.log("JOINED")
+            openInstaModal();
         }
         else {
             document.getElementById(id).setAttribute("value", "Join")
@@ -648,12 +649,29 @@ let removeUser = async function(id) {
         console.log(response.status)
     }
 }
-let displayNotifications = async function() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*let displayNotifications = async function() {
     let dropdownContent = document.getElementById('dropdownContent');
     console.log("Count: " + dropdownContent.childElementCount)
 
     if (dropdownContent.childElementCount > 0) {
-        dropdownContent.classList.toggle("show");
+        dropdownContent.style.display = 'none'
         dropdownContent.innerHTML = '';
         return;
     }
@@ -688,14 +706,16 @@ let displayNotifications = async function() {
             //<input type="button" value="Notification1" id='123' onclick="displayNotification()">
             let newNotification = document.createElement('input');
             newNotification.setAttribute('type', 'button')
-            let notificationText = "Notification from " + userRes.user.username
+            //let notificationText = "Notification from " + userRes.user.username
+            let notificationText = res.notifications[i].subject
             newNotification.setAttribute('value', notificationText)
             newNotification.addEventListener('click', function(){openNotificationModal(res.notifications[i], userRes.user.username)}, false)
             dropdownContent.appendChild(newNotification);
 
         }
     }
-    document.getElementById('dropdownContent').classList.toggle("show");
+    //document.getElementById('dropdownContent').classList.toggle("show");
+    dropdownContent.style.display = 'block'
 }
 let closeNotificationModal = function() {
     //document.getElementById('modalNotification').innerHTML = ""
@@ -722,4 +742,4 @@ let openNotificationModal = function(notification, sender) {
 
     //let sendButton = document.getElementById('sendMessage')
     //sendButton.addEventListener('click', function(){sendMessage(id)}, false)
-}
+}*/

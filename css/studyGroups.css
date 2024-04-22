@@ -236,7 +236,7 @@ td:last-child {
     margin-top: 5%;
     /*height: 80%;*/
 }
-#notificationModalContainer {
+/*#notificationModalContainer {
     position: fixed;
     z-index: 9;
     display: none;
@@ -256,7 +256,7 @@ td:last-child {
     width: 50%;
     min-width: 300px;
     margin-top: 5%;
-}
+}*/
 #meetingTimes {
     text-align: center;
 }
@@ -280,7 +280,7 @@ td:last-child {
     font-size: 20px;
 }*/
 /*end modal stuff*/
-.dropdown {
+/*.dropdown {
     white-space: nowrap;
     position: relative;
     display: inline-block
@@ -288,28 +288,18 @@ td:last-child {
 .dropdownContent {
     display: none;
     z-index: 8;
-    /*position: absolute;*/
     position: fixed;
     min-width: 200px;
     overflow: auto;
 }
 .dropdownContent input {
-    /*position: fixed;*/
-    
     color: black;
     padding: 10px 10px;
     display: block;
     min-width: 200px;
     text-decoration: none;
 }
-/*.dropdownContent a {
-    position: fixed;
-    color: black;
-    padding: 10px 10px;
-    display: block;
-    min-width: 200px;
-    text-decoration: none;
-}*/
+
 .show {
     display: block;
 }
@@ -321,4 +311,4 @@ td:last-child {
 }
 #notificationButton:hover {
     background-color: #888;
-}
+}*/

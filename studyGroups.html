@@ -13,17 +13,8 @@
         <a class="navlink" href="index.html" onclick="logoutUser()">Logout</a>
         <a class="navlink" href="profile.html">Profile</a>
         <div class="dropdown navlink2">
-            
-            <!--<button>Notifications</button>-->
             <input type="button" value="Notifications" id='notificationButton' onclick="displayNotifications()">
             <div id="dropdownContent" class="dropdownContent">
-                
-                <!--<input type="button" value="Notification1" id='123' onclick="displayNotification()">
-                <input type="button" value="Notification2" id='234' onclick="displayNotification()">
-                <input type="button" value="Notification3" id='234' onclick="displayNotification()">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>-->
             </div>
         </div>
         <a class="navlink" href="createStudyGroup.html">Create a Study Group</a>
@@ -208,7 +199,28 @@
             <input type="button" value="close" id="closeMessageModal" class="button" onclick="closeNotificationModal()">
         </div>
     </div>
+    <div id="instaModalContainer">
+        <div id="instaModalContent">
+            <!--<div id="notificationSender"></div>-->
+
+            <label for="instaUsername">Username</label><br>
+            <input type="text" id="instaUsername" name="instaUsername" class="mainInput"><br>
+            <div id="instaUsername"></div>
+
+            <label for="instaPassword">Password</label><br>
+            <input type="text" id="instaPassword" name="instaPassword" class="mainInput"><br>
+            <div id="instaPassword"></div>
+
+            <input type="button" value="Close" id="closeInstaModal" class="button" onclick="closeInstaModal()">
+            <input type="button" value="Share to Instagram" id="saveInsta" class="button" onclick="postInsta('join')">
+            <input type="button" value="Save" id="saveInsta" class="button" onclick="saveInsta(true)">
+            
+        </div>
+    </div>
+    <script src="js/instagram.js"></script>
     <script src="js/logout.js"></script>
     <script src="js/studyGroups.js"></script>
+    <script src="js/notifications.js"></script>
+    
 </body>
 </html>
